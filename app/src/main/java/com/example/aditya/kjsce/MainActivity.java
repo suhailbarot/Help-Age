@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button button = (Button) findViewById(R.id.location);
         button.setOnClickListener(this);
 
+
     }
 
     @Override
@@ -26,6 +27,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.location:
                 Intent intent = new Intent(MainActivity.this, LocationActivity.class);
                 startActivity(intent);
+                break;
+
+            case R.id.phonenum:
+                Intent intent2 = new Intent(MainActivity.this, PhoneNumber.class);
+                startActivity(intent2);
                 break;
         }
     }
