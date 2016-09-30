@@ -36,6 +36,9 @@
         <activity android:name=".Location.LocationActivity"
                   android:label="Location" />
 
+        <activity android:name=".PhoneNumber"
+            android:label="Phone Number" />
+
         <service android:name="com.example.aditya.kjsce.Location.LocationService" />
 
     </application>

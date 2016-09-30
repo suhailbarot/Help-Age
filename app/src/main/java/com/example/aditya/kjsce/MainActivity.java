@@ -18,6 +18,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button button = (Button) findViewById(R.id.location);
         button.setOnClickListener(this);
 
+        Button button1 = (Button) findViewById(R.id.phonenum);
+        button1.setOnClickListener(this);
 
     }
 
