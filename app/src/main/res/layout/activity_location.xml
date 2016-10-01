@@ -21,23 +21,23 @@
         android:text="Set Current Location As Home Location"
         android:layout_gravity="center"
         android:textSize="20sp"
-
         android:id="@+id/loc"/>
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Notify For Device Control Around Home"
-        android:layout_marginTop="10sp"
-        android:id="@+id/loc_checkbox"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/location_save"
         android:text="SAVE"
         android:gravity="center"
         android:layout_gravity="center"
+        android:layout_marginTop="20sp"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/skip"
+        android:text="Skip"
+        android:layout_gravity="center"
         android:layout_marginTop="20sp"/>
 
 </LinearLayout>

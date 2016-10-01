@@ -21,6 +21,7 @@ import android.widget.Button;
 
 import java.util.HashMap;
 
+import com.example.aditya.kjsce.HomeActivity;
 import com.example.aditya.kjsce.PostMethod.PostMethod;
 import com.example.aditya.kjsce.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -43,6 +44,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class LocationActivity extends AppCompatActivity implements
+        View.OnClickListener,
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -98,33 +100,16 @@ public class LocationActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_location);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        Button skip = (Button) findViewById(R.id.skip);
+        skip.setOnClickListener(this);
+
         displayLocationSettingsRequest(this);
         setUpLocationService();
 
-        Button location = new Button(this);
-        location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //HashMap<String, String> hashmap = new HashMap<>();
-                latitude = Double.toString(currentLatitude);
-                longitude = Double.toString(currentLongitude);
-                /*hashmap.put("latitude", latitude);
-                hashmap.put("longitude", longitude);
-                String url = "http://localhost:8080/user/addLocation";
-                PostMethod task = new PostMethod(hashmap, url, LocationActivity.this);
-                String postReturn = "";
-                try {
-                    postReturn = task.execute("").get();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }*/
-                loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
-                loginPrefsEditor = loginPreferences.edit();
-                loginPrefsEditor.putString("latitude",latitude);
-                loginPrefsEditor.putString("longitude",longitude);
-                loginPrefsEditor.commit();
-            }
-        });
+        Button location = (Button) findViewById(R.id.location_save);
+        location.setOnClickListener(this);
+
+
     }
 
     private void displayLocationSettingsRequest(Context context) {
@@ -284,11 +269,27 @@ public class LocationActivity extends AppCompatActivity implements
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
 
-        if(flag == 0) {
+
             googleMap.addMarker(new MarkerOptions().position(new LatLng(currentLatitude, currentLongitude)).title("Current Location"));
-            flag = 1;
-        }
+
+
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId())
+        {
+            case R.id.skip:
+                Intent intent = new Intent(LocationActivity.this, HomeActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.location_save:
+                Intent intent1 = new Intent(LocationActivity.this, HomeActivity.class);
+                startActivity(intent1);
+                break;
+        }
     }
 }

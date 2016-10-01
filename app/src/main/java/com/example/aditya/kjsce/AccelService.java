@@ -62,8 +62,6 @@ public class AccelService extends IntentService implements SensorEventListener {
         /* check sensor type */
         if(event.values[1]!=0){
 
-            Log.d("AccelService", "Accel");
-
             mGravity = event.values.clone();
             // assign directions
             float x=event.values[0];
@@ -78,15 +76,16 @@ public class AccelService extends IntentService implements SensorEventListener {
           // we calculate the length of the event because these values are independent of the co-ordinate system.
             float delta = mAccelCurrent - mAccelLast;
             mAccel = mAccel*0.9f + delta;
-            if(mAccel > 15)
+            if(mAccelCurrent > 15)
             {
                 if(flag == 0) {
                     loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
                     loginPrefsEditor = loginPreferences.edit();
                     String number1 = loginPreferences.getString("number1", "");
                     String number2 = loginPreferences.getString("number2", "");
-                    //sendSMS(number1, "We have detected some unusual activity(a fall). Please check on the as soon as possible");
-                    //sendSMS(number2, "We have detected some unusual activity(a fall). Please check on the as soon as possible");
+                    Log.d(TAG, "onSensorChanged: "+mAccelCurrent);
+                    sendSMS("9820136330", "We have detected some unusual activity(a fall). Please check on the as soon as possible");
+                    sendSMS("9619708661", "We have detected some unusual activity(a fall). Please check on the as soon as possible");
                     flag = 1;
                 }
             }

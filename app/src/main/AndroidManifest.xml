@@ -50,6 +50,10 @@
             android:name=".RemindersActivity"
             android:label="Reminders" />
 
+        <activity
+            android:name=".HomeActivity"
+            android:label="Home" />
+
         <service android:name=".Location.LocationService" />
 
         <!--
