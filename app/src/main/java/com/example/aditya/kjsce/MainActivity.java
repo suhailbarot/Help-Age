@@ -1,8 +1,8 @@
 package com.example.aditya.kjsce;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
@@ -13,10 +13,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = new Intent(MainActivity.this, AccelService.class);
+        startService(intent);
         setContentView(R.layout.activity_main);
 
         Button button = (Button) findViewById(R.id.location);
         button.setOnClickListener(this);
+        Button textbutton = (Button) findViewById(R.id.text);
+        textbutton.setOnClickListener(this);
 
         Button button1 = (Button) findViewById(R.id.phonenum);
         button1.setOnClickListener(this);
@@ -35,6 +39,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent2 = new Intent(MainActivity.this, PhoneNumber.class);
                 startActivity(intent2);
                 break;
+
+            case R.id.text:
+                Intent intent1 = new Intent(MainActivity.this, SMSActivity.class);
+                startActivity(intent1);
+
         }
+
+
+
     }
+
 }
