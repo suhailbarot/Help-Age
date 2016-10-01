@@ -29,9 +29,9 @@ public class LocationService extends Service
 {
     private static final String TAG = "BOOMBOOMTESTGPS";
     private LocationManager mLocationManager = null;
-    private static final int LOCATION_INTERVAL = 100;
+    private static final int LOCATION_INTERVAL = 1000;
     private static final float LOCATION_DISTANCE = 0;
-    private int flag,flag2;
+    int flag,flag2 = 0;
 
     private class LocationListener implements android.location.LocationListener {
         Location mLastLocation;
@@ -43,7 +43,7 @@ public class LocationService extends Service
 
         @Override
         public void onLocationChanged(Location location) {
-            //Log.e(TAG, "onLocationChanged: " + location);
+            Log.d(TAG, "onLocationChanged: " + location);
             handleNewLocation(location);
             mLastLocation.set(location);
         }
@@ -85,8 +85,6 @@ public class LocationService extends Service
     public void onCreate() {
         Log.e(TAG, "onCreate");
         initializeLocationManager();
-        //if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
             try {
                 mLocationManager.requestLocationUpdates(
                         LocationManager.NETWORK_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
@@ -96,7 +94,7 @@ public class LocationService extends Service
             } catch (IllegalArgumentException ex) {
                 Log.d(TAG, "network provider does not exist, " + ex.getMessage());
             }
-            /*try {
+            try {
                 mLocationManager.requestLocationUpdates(
                         LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
                         mLocationListeners[0]);
@@ -104,7 +102,7 @@ public class LocationService extends Service
                 Log.i(TAG, "fail to request location update, ignore", ex);
             } catch (IllegalArgumentException ex) {
                 Log.d(TAG, "gps provider does not exist " + ex.getMessage());
-            }*/
+            }
 
        // }
 
@@ -112,17 +110,14 @@ public class LocationService extends Service
     //public QuarkCustomEvent<Location> locationUpdate = new QuarkCustomEvent<>();
     private void handleNewLocation(Location location) {
         //locationUpdate.fire(location);
-        Log.d(TAG, location.toString());
-
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
         // 18.957583, 72.816611
-        LocationActivity locationActivity = new LocationActivity();
-        /*if(locationActivity.latitude!=null&&locationActivity.longitude!=null) {
-            Double home_lat = Double.parseDouble(locationActivity.latitude);
-            Double home_long = Double.parseDouble(locationActivity.longitude);
+        //LocationActivity locationActivity = new LocationActivity();
+        //if(locationActivity.latitude!=null&&locationActivity.longitude!=null) {
+            Double home_lat = 18.957583;
+            Double home_long = 72.816611;
             double dist = distanceBetweenTwoPoint(currentLatitude, currentLongitude, home_lat, home_long);
-
 
             Log.d("Distance is", "" + dist);
 
@@ -130,8 +125,11 @@ public class LocationService extends Service
                 flag = 1;
             }
 
-            if (dist == 500 && flag == 1) {
-                NotificationCompat.Builder mBuilder =
+            if (dist > 600 && flag == 1) {
+
+                //TODO add message code
+
+                /*NotificationCompat.Builder mBuilder =
                         new NotificationCompat.Builder(this)
                                 //.setSmallIcon(R.drawable.ac)
                                 .setContentTitle("My notification")
@@ -154,7 +152,7 @@ public class LocationService extends Service
                         (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                 mNotifyMgr.notify(mNotificationId, mBuilder.build());
 
-                flag = 0;
+                flag = 0;*/
             } else {
                 Log.d("dist2", "" + flag);
             }
@@ -166,7 +164,7 @@ public class LocationService extends Service
             if (dist == 500 && flag2 == 1) {
 
             }
-        }*/
+
     }
 
     double distanceBetweenTwoPoint(double srcLat, double srcLng, double desLat, double desLng) {

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +20,7 @@ import android.widget.Button;
 
 import java.util.HashMap;
 
+import com.example.aditya.kjsce.PostMethod.PostMethod;
 import com.example.aditya.kjsce.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -33,11 +35,14 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class LocationActivity extends AppCompatActivity implements
+        OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
@@ -78,10 +83,10 @@ public class LocationActivity extends AppCompatActivity implements
 
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(10 * 1000)        // 10 seconds, in milliseconds
-                .setFastestInterval(1 * 1000); // 1 second, in milliseconds
+                .setInterval(100 * 1000)        // 10 seconds, in milliseconds
+                .setFastestInterval(100 * 1000); // 1 second, in milliseconds
 
-        //setUpMapIfNeeded();
+        setUpMapIfNeeded();
     }
 
     @Override
@@ -93,17 +98,16 @@ public class LocationActivity extends AppCompatActivity implements
         displayLocationSettingsRequest(this);
         setUpLocationService();
 
-        /*Button location = new Button(this);
+        Button location = new Button(this);
         location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 HashMap<String, String> hashmap = new HashMap<>();
                 latitude = Double.toString(currentLatitude);
                 longitude = Double.toString(currentLongitude);
-                hashmap.put("token", Manager.sessionToken);
                 hashmap.put("latitude", latitude);
                 hashmap.put("longitude", longitude);
-                String url = Manager.base_url + "user/addLocation";
+                String url = "http://localhost:8080/user/addLocation";
                 PostMethod task = new PostMethod(hashmap, url, LocationActivity.this);
                 String postReturn = "";
                 try {
@@ -112,7 +116,7 @@ public class LocationActivity extends AppCompatActivity implements
                     e.printStackTrace();
                 }
             }
-        });*/
+        });
     }
 
     private void displayLocationSettingsRequest(Context context) {
@@ -122,8 +126,7 @@ public class LocationActivity extends AppCompatActivity implements
 
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(100);
-        locationRequest.setFastestInterval(100);
+
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
         builder.setAlwaysShow(true);
@@ -175,7 +178,7 @@ public class LocationActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        //setUpMapIfNeeded();
+        setUpMapIfNeeded();
         if (mGoogleApiClient != null)
             mGoogleApiClient.connect();
     }
@@ -190,18 +193,15 @@ public class LocationActivity extends AppCompatActivity implements
             }
     }
 
-    /*private void setUpMapIfNeeded() {
+    private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
-            // Check if we were successful in obtaining the map.
-            if (mMap != null) {
-                //setUpMap();
-            }
+            MapFragment mapFragment = (MapFragment) getFragmentManager()
+                    .findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
         }
-    }*/
+    }
 
     private void handleNewLocation(Location location) {
         Log.d(TAG, "new location " + location.toString());
@@ -212,32 +212,24 @@ public class LocationActivity extends AppCompatActivity implements
         Log.d(TAG, "handleNewLocation: " + currentLatitude);
         Log.d(TAG, "handleNewLocation: " + currentLongitude);
 
-        //LatLng latLng = new LatLng(currentLatitude, currentLongitude);
-
-        /*if (flag == 0) {
-            mMap.addMarker(new MarkerOptions().position(new LatLng(currentLatitude, currentLongitude)).title("Current Location"));
-            flag = 1;
-        }
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(17));*/
     }
 
     @Override
     public void onConnected(Bundle bundle) {
-        Log.d(TAG, "onConnected: Here motherfos");
-    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-        Log.d(TAG, "onConnected: here mofos");
-        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (location == null) {
-        }
-        else {
-            handleNewLocation(location);
-        }
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-            return;
-        }
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
+                return;
+            } else {
+                Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                if (location == null) {
+                } else {
+                   // handleNewLocation(location);
+                }
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            }
+        }
     }
 
     @Override
@@ -251,12 +243,10 @@ public class LocationActivity extends AppCompatActivity implements
         if (connectionResult.hasResolution()) {
             try {
                 connectionResult.startResolutionForResult(this, CONNECTION_FAILURE_RESOLUTION_REQUEST);
-            }
-            catch (IntentSender.SendIntentException e) {
+            } catch (IntentSender.SendIntentException e) {
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             Log.i(TAG, "Location services connection failed with code " + connectionResult.getErrorCode());
         }
     }
@@ -272,8 +262,7 @@ public class LocationActivity extends AppCompatActivity implements
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if(id==android.R.id.home)
-        {
+        if (id == android.R.id.home) {
             onBackPressed();
             return true;
         }
@@ -281,4 +270,16 @@ public class LocationActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
+
+        if (flag == 0) {
+            googleMap.addMarker(new MarkerOptions().position(new LatLng(currentLatitude, currentLongitude)).title("Current Location"));
+            flag = 1;
+        }
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+    }
 }
