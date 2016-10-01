@@ -6,6 +6,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -58,6 +59,8 @@ public class LocationActivity extends AppCompatActivity implements
     int flag = 0;
     double currentLatitude;
     double currentLongitude;
+    SharedPreferences loginPreferences;
+    SharedPreferences.Editor loginPrefsEditor;
     String latitude;
     String longitude;
 
@@ -102,10 +105,10 @@ public class LocationActivity extends AppCompatActivity implements
         location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HashMap<String, String> hashmap = new HashMap<>();
+                //HashMap<String, String> hashmap = new HashMap<>();
                 latitude = Double.toString(currentLatitude);
                 longitude = Double.toString(currentLongitude);
-                hashmap.put("latitude", latitude);
+                /*hashmap.put("latitude", latitude);
                 hashmap.put("longitude", longitude);
                 String url = "http://localhost:8080/user/addLocation";
                 PostMethod task = new PostMethod(hashmap, url, LocationActivity.this);
@@ -114,7 +117,12 @@ public class LocationActivity extends AppCompatActivity implements
                     postReturn = task.execute("").get();
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
+                }*/
+                loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+                loginPrefsEditor = loginPreferences.edit();
+                loginPrefsEditor.putString("latitude",latitude);
+                loginPrefsEditor.putString("longitude",longitude);
+                loginPrefsEditor.commit();
             }
         });
     }
@@ -272,10 +280,11 @@ public class LocationActivity extends AppCompatActivity implements
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.d(TAG, "onMapReady: here");
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
 
-        if (flag == 0) {
+        if(flag == 0) {
             googleMap.addMarker(new MarkerOptions().position(new LatLng(currentLatitude, currentLongitude)).title("Current Location"));
             flag = 1;
         }

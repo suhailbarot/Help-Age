@@ -43,9 +43,12 @@
             android:name=".Location.LocationActivity"
             android:label="Location" />
         <activity
-
             android:name=".PhoneNumber"
             android:label="Phone Number" />
+
+        <activity
+            android:name=".RemindersActivity"
+            android:label="Reminders" />
 
         <service android:name=".Location.LocationService" />
 

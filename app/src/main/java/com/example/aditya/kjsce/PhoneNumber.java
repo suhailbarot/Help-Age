@@ -1,5 +1,6 @@
 package com.example.aditya.kjsce;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -17,6 +18,8 @@ import java.util.HashMap;
 public class PhoneNumber extends AppCompatActivity implements View.OnClickListener {
 
     String TAG = "PhoneNumber";
+    SharedPreferences loginPreferences;
+    SharedPreferences.Editor loginPrefsEditor;
     EditText editText1;
     EditText editText2;
 
@@ -42,6 +45,13 @@ public class PhoneNumber extends AppCompatActivity implements View.OnClickListen
                 String number2 = editText2.getText().toString();
                 String android_id = Secure.getString(getApplicationContext().getContentResolver(),
                         Secure.ANDROID_ID);
+
+                loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+                loginPrefsEditor = loginPreferences.edit();
+                loginPrefsEditor.putString("number1",number1);
+                loginPrefsEditor.putString("number2",number2);
+                loginPrefsEditor.commit();
+
                 HashMap<String, String> hashmap = new HashMap<>();
                 hashmap.put("number1", number1);
                 hashmap.put("number2", number2);

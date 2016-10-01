@@ -25,6 +25,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button button1 = (Button) findViewById(R.id.phonenum);
         button1.setOnClickListener(this);
 
+        Button button2 = (Button) findViewById(R.id.reminders);
+        button2.setOnClickListener(this);
+
     }
 
     @Override
@@ -43,6 +46,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.text:
                 Intent intent1 = new Intent(MainActivity.this, SMSActivity.class);
                 startActivity(intent1);
+
+            case R.id.reminders:
+                Intent intent3 = new Intent(MainActivity.this, RemindersActivity.class);
+                startActivity(intent3);
 
         }
 

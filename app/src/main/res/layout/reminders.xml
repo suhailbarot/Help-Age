@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="R DETAILS"
+        android:layout_marginTop="32dp"
+        android:textSize="40sp"
+        android:textColor="#ffffff"
+        android:gravity="center"
+        android:id="@+id/rems_headtext"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+
+        android:text="Reminder"
+        android:id="@+id/rems_text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rems_headtext"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="12dp"
+        android:textSize="20sp"
+        android:textColor="#ffffff"/>
+
+    <EditText
+        android:padding="10px"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/rems_editText1"
+        android:layout_below="@+id/rems_text1"
+        android:layout_marginTop="12dp"
+        android:hint="Remind about"
+        android:layout_alignLeft="@+id/rems_text1"
+        android:layout_alignStart="@+id/rems_text1"
+        android:background="#ffffff"
+        />
+
+    <TextView
+
+        android:text="Hours"
+
+        android:id="@+id/rems_text2"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rems_editText1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        android:textSize="20sp"
+        android:textColor="#ffffff"/>
+
+    <EditText
+        android:padding="10px"
+        android:inputType="time"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:id="@+id/rems_editText2"
+        android:hint=""
+        android:background="#ffffff"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:padding="10px"
+        android:inputType="time"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/rems_editText3"
+        android:layout_below="@+id/rems_text3"
+        android:layout_marginTop="12dp"
+        android:hint="DD-MM-YYYY"
+        android:layout_alignLeft="@+id/rems_text3"
+        android:layout_alignStart="@+id/rems_text3"
+        android:background="#ffffff"
+        />
+
+    <TextView
+
+        android:text="Date"
+
+        android:id="@+id/rems_text3"
+        android:layout_width="50sp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rems_editText2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="18dp"
+        android:textSize="20sp"
+        android:textColor="#ffffff"/>
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show location at that time "
+        android:textColor="#ffffff"
+        android:id="@+id/rems_radioButton"
+        android:layout_marginTop="18dp"
+        android:shadowColor="#ffffff"
+        android:padding="10dp"
+        android:layout_below="@+id/rems_editText3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="20sp"
+        android:buttonTint="#ffffff"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SUBMIT"
+        android:id="@+id/rems_button"
+        android:layout_below="@+id/rems_radioButton"
+        android:layout_centerHorizontal="true"
+        android:onClick="fun" />
+
+    <EditText
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:inputType="time"
+        android:ems="10"
+        android:id="@+id/rems_edit4"
+        android:background="#ffffff"
+        android:width="100dp"
+        android:padding="10px"
+        android:hint=""
+        android:layout_alignBottom="@+id/minus_minutes"
+        android:layout_toRightOf="@+id/rems_button"
+        android:layout_toEndOf="@+id/rems_button" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Minutes"
+        android:id="@+id/textView"
+        android:layout_alignBottom="@+id/rems_text2"
+        android:layout_alignLeft="@+id/rems_edit4"
+        android:layout_alignStart="@+id/rems_edit4"
+        android:textColor="#ffffff"
+        android:layout_marginTop="15dp"
+        android:textSize="20sp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="30sp"
+        android:layout_height="30sp"
+        android:text="New Button"
+        android:id="@+id/plus_hours"
+        android:layout_alignTop="@+id/rems_editText2"
+        android:layout_toRightOf="@+id/rems_editText2"
+        android:layout_toEndOf="@+id/rems_editText2"
+        android:onClick="inc" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="30sp"
+        android:layout_height="30sp"
+        android:text="New Button"
+        android:id="@+id/minus_minutes"
+        android:onClick="dec"
+        android:layout_above="@+id/rems_text3"
+        android:layout_toRightOf="@+id/rems_edit4"
+        android:layout_toEndOf="@+id/rems_edit4" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="30sp"
+        android:layout_height="30sp"
+        android:text="New Button"
+        android:id="@+id/minus_hours"
+        android:onClick="dec"
+        android:layout_alignBottom="@+id/rems_editText2"
+        android:layout_toRightOf="@+id/rems_editText2"
+        android:layout_toEndOf="@+id/rems_editText2" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="30sp"
+        android:layout_height="30sp"
+        android:text="New Button"
+        android:id="@+id/plus_minutes"
+        android:onClick="inc"
+        android:layout_alignTop="@+id/rems_edit4"
+        android:layout_alignLeft="@+id/minus_minutes"
+        android:layout_alignStart="@+id/minus_minutes" />
+
+
+</RelativeLayout>

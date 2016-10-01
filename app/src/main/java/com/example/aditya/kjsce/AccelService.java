@@ -2,6 +2,7 @@ package com.example.aditya.kjsce;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -23,6 +24,9 @@ public class AccelService extends IntentService implements SensorEventListener {
     private float mAccel;
     private float mAccelCurrent;
     private float mAccelLast;
+    int flag = 0;
+    SharedPreferences loginPreferences;
+    SharedPreferences.Editor loginPrefsEditor;
 
 
     String TAG = "AccelService";
@@ -75,18 +79,18 @@ public class AccelService extends IntentService implements SensorEventListener {
             float delta = mAccelCurrent - mAccelLast;
             mAccel = mAccel*0.9f + delta;
             if(mAccel > 15)
-
             {
-
-
-                sendSMS("9820066058","Check on your Dadi, Bitch");
-
-
+                if(flag == 0) {
+                    loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+                    loginPrefsEditor = loginPreferences.edit();
+                    String number1 = loginPreferences.getString("number1", "");
+                    String number2 = loginPreferences.getString("number2", "");
+                    //sendSMS(number1, "We have detected some unusual activity(a fall). Please check on the as soon as possible");
+                    //sendSMS(number2, "We have detected some unusual activity(a fall). Please check on the as soon as possible");
+                    flag = 1;
+                }
             }
         }
-
-       // sensorManager.unregisterListener(this);
-
     }
 
     @Override

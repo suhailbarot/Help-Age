@@ -1,4 +1,5 @@
-package com.example.aditya.kjsce.Location;/*
+package com.example.aditya.kjsce.Location;
+/*
     Created by JEELAALI on 30/9/16.
  */
 
@@ -8,6 +9,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -16,6 +18,7 @@ import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.telephony.SmsManager;
 import android.util.Log;
 
 import com.example.aditya.kjsce.MainActivity;
@@ -28,6 +31,8 @@ import com.google.android.gms.location.LocationServices;
 public class LocationService extends Service
 {
     private static final String TAG = "BOOMBOOMTESTGPS";
+    SharedPreferences loginPreferences;
+    SharedPreferences.Editor loginPrefsEditor;
     private LocationManager mLocationManager = null;
     private static final int LOCATION_INTERVAL = 1000;
     private static final float LOCATION_DISTANCE = 0;
@@ -107,9 +112,9 @@ public class LocationService extends Service
        // }
 
     }
-    //public QuarkCustomEvent<Location> locationUpdate = new QuarkCustomEvent<>();
+
     private void handleNewLocation(Location location) {
-        //locationUpdate.fire(location);
+
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
         // 18.957583, 72.816611
@@ -125,10 +130,14 @@ public class LocationService extends Service
                 flag = 1;
             }
 
-            if (dist > 600 && flag == 1) {
-
-                //TODO add message code
-
+            if (dist > 600 && flag == 0) {
+                Log.d(TAG, "handleNewLocation: here bruv");
+                loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+                loginPrefsEditor = loginPreferences.edit();
+                String number1 = loginPreferences.getString("number1", "");
+                String number2 = loginPreferences.getString("number2", "");
+                //sendSMS(number1,"Leaving the House");
+                //sendSMS(number2,"Leaving the House");
                 /*NotificationCompat.Builder mBuilder =
                         new NotificationCompat.Builder(this)
                                 //.setSmallIcon(R.drawable.ac)
@@ -150,21 +159,35 @@ public class LocationService extends Service
                 int mNotificationId = 001;
                 NotificationManager mNotifyMgr =
                         (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                mNotifyMgr.notify(mNotificationId, mBuilder.build());
-
-                flag = 0;*/
+                mNotifyMgr.notify(mNotificationId, mBuilder.build());*/
             } else {
-                Log.d("dist2", "" + flag);
+                Log.d("dist", "elsing");
             }
 
-            if (dist == 400) {
+            if (dist == 500) {
                 flag2 = 1;
             }
 
-            if (dist == 500 && flag2 == 1) {
-
+            if (dist < 500 && flag2 == 1) {
+                loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+                loginPrefsEditor = loginPreferences.edit();
+                String number1 = loginPreferences.getString("number1", "");
+                String number2 = loginPreferences.getString("number2", "");
+                sendSMS(number1,"Reaching the House");
+                sendSMS(number2,"Reaching the House");
             }
 
+    }
+
+    protected void sendSMS(String number,String mess) {
+        Log.d("SMS","InSMSFucnt");
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(number, null, mess, null, null);
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     double distanceBetweenTwoPoint(double srcLat, double srcLng, double desLat, double desLng) {
